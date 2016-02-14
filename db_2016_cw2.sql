@@ -35,7 +35,8 @@ ORDER BY	name;
 SELECT 	      *
 FROM   	      monarch AS first_monarch
 WHERE	      accession<ALL (SELECT accession
-	      		     FROM   monarch
-			     WHERE  monarch.house=first_monarch.house)
+	      		     FROM   monarch 
+			     WHERE monarch.house = first_monarch.house
+			     AND first_monarch.name <> monarch.name)
 AND	      first_monarch.house IS NOT null;
 
