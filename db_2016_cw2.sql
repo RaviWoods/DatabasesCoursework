@@ -17,11 +17,11 @@ SELECT
 	name
 FROM	      
 	monarch
-WHERE	      #
+WHERE
 	coronation IS null
 	AND	  house IS NOT null
 ORDER BY      
-	name;
+	name ASC;
 
 -- Q3 returns (name,father,mother)
 SELECT	
@@ -57,7 +57,7 @@ FROM
 		AND 			
 			person_c.father = person_b.name
 ORDER BY		
-	person_c.name;
+	person_c.name ASC;
 
 -- Q4 returns (name)
 SELECT		
@@ -72,7 +72,7 @@ SELECT
 FROM		
 	prime_minister
 ORDER BY	
-	name;
+	name ASC;
 
 -- Q5 returns (name)
 SELECT	      
@@ -107,7 +107,7 @@ WHERE
 AND	      
 	house IS NOT null
 ORDER BY      
-	name;
+	name ASC;
 
 -- Q6 returns (house,name,accession)
 SELECT 	      
@@ -129,4 +129,4 @@ WHERE
 	AND	      
 		house IS NOT null
 ORDER BY      
-	accession;
+	accession ASC;
