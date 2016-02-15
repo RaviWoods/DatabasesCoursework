@@ -1,5 +1,5 @@
 -- Q1 returns (name,name,born_in)
-SELECT DISTINCT	person_a.name, person_b.name, person_a.born_in
+SELECT		person_a.name, person_b.name, person_a.born_in
 FROM		person AS person_c
 JOIN		person AS person_a
 ON		person_a.name = person_c.father
@@ -12,7 +12,6 @@ AND		person_b.born_in = person_a.born_in;
 SELECT	      name
 FROM	      monarch
 WHERE	      coronation IS null
-AND	      house IS NOT null
 ORDER BY      name;
 
 -- Q3 returns (name,father,mother)
@@ -22,7 +21,6 @@ ORDER BY      name;
 -- Q4 returns (name)
 SELECT		name
 FROM   		monarch
-WHERE		house IS NOT null
 UNION
 SELECT		name
 FROM		prime_minister
@@ -34,17 +32,15 @@ SELECT	      name
 FROM	      monarch AS abd_monarch NATURAL JOIN person
 WHERE	      dod>SOME (SELECT accession
 	      	        FROM   monarch
-			WHERE  abd_monarch.accession<monarch.accession)
-AND	      house IS NOT null
-ORDER BY      name;
+			WHERE  abd_monarch.accession<monarch.accession);
 
 -- Q6 returns (house,name,accession)
 
-SELECT 	      house, name, accession
+SELECT 	      *
 FROM   	      monarch AS first_monarch
 WHERE	      accession<ALL (SELECT accession
 	      		     FROM   monarch 
 			     WHERE monarch.house = first_monarch.house
 			     AND first_monarch.name <> monarch.name)
-AND	      house IS NOT null
-ORDER BY      accession;
+AND	      first_monarch.house IS NOT null;
+
