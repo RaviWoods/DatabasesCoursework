@@ -17,8 +17,33 @@ ORDER BY      name;
 
 -- Q3 returns (name,father,mother)
 
-; 
-
+SELECT	      person_c.name,
+	      person_b.name,
+	      person_a.name 
+FROM	      person AS person_c
+JOIN	      person AS person_a
+ON	      (
+		person_c.dod < person_a.dod
+	      OR
+		(
+			person_c.dod IS NOT null
+		AND
+			person_a.dod IS null
+	      	)
+	       )
+AND	       person_c.mother = person_a.name
+JOIN	       person AS person_b
+ON	       (
+		person_c.dod < person_b.dod	
+		OR
+			( 
+			  person_c.dod IS NOT null
+			  AND
+				person_b.dod IS null
+			)
+			)
+AND 			person_c.father = person_b.name
+ORDER BY		person_c.name;
 -- Q4 returns (name)
 SELECT		name
 FROM   		monarch
@@ -32,9 +57,20 @@ ORDER BY	name;
 
 SELECT	      name
 FROM	      monarch AS abd_monarch NATURAL JOIN person
-WHERE	      dod>SOME (SELECT accession
+WHERE	      (
+	      dod>SOME (SELECT accession
 	      	        FROM   monarch
-			WHERE  abd_monarch.accession<monarch.accession)
+			WHERE  abd_monarch.accession<monarch.accession
+			)
+			OR
+			(
+			dod IS null
+			    AND
+			    accession<SOME (SELECT accession
+			    		   FROM monarch
+					   )
+			)
+		) 
 AND	      house IS NOT null
 ORDER BY      name;
 
