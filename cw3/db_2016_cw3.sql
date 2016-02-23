@@ -1,6 +1,10 @@
 -- Q1 returns (first_name)
-
-;
+SELECT 
+	SUBSTRING( TRIM(name) FROM '[^ ]+') AS first_name
+FROM 
+	person
+ORDER BY
+	first_name ASC;
 
 -- Q2 returns (born_in,popularity)
 
