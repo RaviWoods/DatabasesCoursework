@@ -6,7 +6,7 @@ FROM
 WHERE   name LIKE '% %'
 UNION
 SELECT DISTINCT
-        name
+        name AS first_name
 FROM
         person
 WHERE
@@ -23,7 +23,8 @@ FROM
 GROUP BY
         born_in
 ORDER BY
-        popularity DESC;
+        popularity DESC,
+	born_in ASC;
 
 -- Q3 returns (house,seventeenth,eighteenth,nineteenth,twentieth)
 SELECT
@@ -68,8 +69,18 @@ ORDER BY
 
 -- Q4 returns (name,age)
 SELECT
-        parent.name,
-        MIN(EXTRACT(year FROM child.dob) - EXTRACT(year FROM parent.dob))
+        parent.name AS name,
+	(EXTRACT (year FROM MIN(child.dob)) - EXTRACT (year FROM parent.dob) ) 
+	- (CASE 
+           WHEN 
+		EXTRACT (month FROM MIN(child.dob)) < EXTRACT(month FROM parent.dob)
+           THEN 1
+           WHEN 
+		EXTRACT (month FROM MIN(child.dob)) = EXTRACT(month FROM parent.dob) 
+           AND  EXTRACT(day FROM MIN(child.dob)) < EXTRACT(day FROM parent.dob)
+           THEN 1
+           ELSE 0
+         END) AS age
 FROM
         person AS parent
         JOIN person AS child
@@ -99,7 +110,8 @@ FROM
 WHERE
         father.gender = 'M'
 ORDER BY
-        father;
+        father ASC,
+	born DESC;
 
 
 -- Q6 returns (monarch,prime_minister)
