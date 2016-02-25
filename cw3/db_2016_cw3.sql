@@ -69,7 +69,7 @@ ORDER BY
 -- Q4 returns (name,age)
 SELECT 
 	parent.name,
-	MIN( EXTRACT(year FROM child.dob) - EXTRACT(year FROM parent.dob) )
+	MIN( EXTRACT(year FROM (child.dob - parent.dob)))
 FROM 
 	person AS parent 
 	JOIN person AS child 
@@ -107,16 +107,19 @@ SELECT DISTINCT
 	monarch.name AS monarch, 
 	prime_minister.name AS prime_minister
 FROM 
-	monarch 
-	JOIN prime_minister 
-	ON 
-		accession < entry 
-		AND 
+	monarch
+	RIGHT JOIN prime_minister
+	ON
+		accession < entry
+		AND
 		entry < ALL(
-			SELECT accession 
-			FROM monarch AS second_monarch 
+			SELECT accession
+			FROM monarch AS second_monarch
 			WHERE second_monarch.accession > monarch.accession)
+		AND 
+		accession IS NOT NULL
 ORDER BY 
 	monarch ASC,
 	prime_minister ASC;
 
+`
