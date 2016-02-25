@@ -125,9 +125,9 @@ FROM
 		accession < entry
                 AND
                 entry <ALL(
-			SELECT accession
-			FROM monarch AS second_monarch
-			WHERE second_monarch.accession > monarch.accession)
+					SELECT accession
+					FROM monarch AS second_monarch
+					WHERE second_monarch.accession > monarch.accession)
                 AND house IS NOT NULL
 ORDER BY
         monarch ASC,
